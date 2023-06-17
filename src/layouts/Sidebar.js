@@ -49,6 +49,11 @@ const navigation = [
     icon: "bi bi-layout-split",
   },
   {
+    title: "SubjectList",
+    href: "/subjectlist",
+    icon: "bi bi-layout-split",
+  },
+  {
     title: "Login",
     href: "/login",
     icon: "bi bi-textarea-resize",

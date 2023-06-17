@@ -15,6 +15,7 @@ const Starter = lazy(() => import("../views/Starter.js"));
 // const Grid = lazy(() => import("../views/ui/Grid"));
 // const Tables = lazy(() => import("../views/ui/Tables"));
 const StudentList = lazy(() => import("../views/ui/StudentList"));
+const SubjectList = lazy(() => import("../views/ui/SubjectList"));
 const Login = lazy(() => import("../views/ui/Login"));
 const AddStudent = lazy(() => import("../views/ui/AddStudent"));
 const AddTeacher = lazy(() => import("../views/ui/AddTeacher"));
@@ -42,6 +43,7 @@ const ThemeRoutes = [
       { path: "/addstudent", exact: true, element: <AddStudent /> },
       { path: "/addteacher", exact: true, element: <AddTeacher /> },
       { path: "/createaccount", exact: true, element: <CreateAccount /> },
+      { path: "/subjectlist", exact: true, element: <SubjectList /> },
       // { path: "/tables", exact: true, element: <Tables /> },
       { path: "/studentlist", exact: true, element: <StudentList /> },
       { path: "/teacherlist", exact: true, element: <TeacherList /> },

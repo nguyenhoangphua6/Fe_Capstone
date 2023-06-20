@@ -3,11 +3,11 @@ import Logo from "./Logo";
 import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
-  {
-    title: "Dashboard",
-    href: "/starter",
-    icon: "bi bi-speedometer2",
-  },
+  // {
+  //   title: "Dashboard",
+  //   href: "/starter",
+  //   icon: "bi bi-speedometer2",
+  // },
   // {
   //   title: "Alert",
   //   href: "/alerts",
@@ -59,13 +59,33 @@ const navigation = [
     icon: "bi bi-textarea-resize",
   },
   {
-    title: "CreateAccount",
-    href: "/createaccount",
+    title: "Profile",
+    href: "/profile",
     icon: "bi bi-textarea-resize",
   },
   {
+    title: "ChangePassword",
+    href: "/changepassword",
+    icon: "bi bi-textarea-resize",
+  },
+  {
+    title: "ResetPassword",
+    href: "/resetpassword",
+    icon: "bi bi-textarea-resize",
+  },
+  // {
+  //   title: "CreateAccount",
+  //   href: "/createaccount",
+  //   icon: "bi bi-textarea-resize",
+  // },
+  {
     title: "AddStudent",
     href: "/addstudent",
+    icon: "bi bi-textarea-resize",
+  },
+  {
+    title: "ExamShow",
+    href: "/examshow",
     icon: "bi bi-textarea-resize",
   },
   {
@@ -73,6 +93,21 @@ const navigation = [
     href: "/addteacher",
     icon: "bi bi-textarea-resize",
   },
+  {
+    title: "ResuiltTable",
+    href: "/resuilttable",
+    icon: "bi bi-textarea-resize",
+  },    
+  {
+    title: "AddExam",
+    href: "/addexam",
+    icon: "bi bi-textarea-resize",
+  }, 
+  {
+    title: "ListSutdentDoExam",
+    href: "/listsutdentdoexam",
+    icon: "bi bi-textarea-resize",
+  }, 
   // {
   //   title: "Forms",
   //   href: "/forms",

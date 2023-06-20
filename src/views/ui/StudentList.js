@@ -11,41 +11,27 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 const StudentList = () => {
     const columns = [
-        {
-          title: "Image",
-          dataIndex: "image",
-          key: "image",
-          size: "small",
-          render: (image) => (
-            <Link to={`/profile/${image}`}>
-              <img
-                alt={image}
-                src={image}
-                style={{
-                  width: 50,
-                  height: 50,
-                  border: "1px solid #d9d9d9",
-                  borderRadius: "10%",
-                }}
-              />
-            </Link>
-          ),
-        },
-        {
-          title: "first name",
-          dataIndex: "first_name",
-          key: "first_name",
+      {
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
+        render: (text, record) => (
+          // <Link to={`/profile/${record.email}`}>
+          //   <a>{text}</a>
+          // </Link>
+          <a>{text}</a>
+        ),
+      },  
+      {
+          title: "Full Name",
+          dataIndex: "fullname",
+          key: "fullname",
           render: (text, record) => (
-            <Link to={`/profile/${record.id}`}>
-              <a>{text}</a>
-            </Link>
+            // <Link to={`/profile/${record.email}`}>
+            //   <a>{text}</a>
+            // </Link>
+            <a>{text}</a>
           ),
-        },
-        {
-          title: "Last name",
-          dataIndex: "last_name",
-          key: "last_name",
-          render: (text) => <a>{text}</a>,
         },
         {
           title: "Ngày sinh",
@@ -53,20 +39,19 @@ const StudentList = () => {
           key: "birthday",
         },
         {
-          title: "Tên lớp",
-          dataIndex: "class",
-          key: "class",
-          render: (text) => <a>{text}</a>,
-        },
-        {
           title: "Giới tính",
           dataIndex: "gender",
           key: "gender",
         },
         {
-          title: "Số điện thoại liên hệ",
-          dataIndex: "phoneNumber",
-          key: "phoneNumber",
+          title: "Địa chỉ",
+          dataIndex: "address",
+          key: "address",
+        },
+        {
+          title: "Thời gian tạo",
+          dataIndex: "created_at",
+          key: "created_at",
         },
         {
           title: "Action",
@@ -89,17 +74,14 @@ const StudentList = () => {
       async function getAllEm() {
         const result = await axios({
           method: "get",
-          url: "http://localhost:8080/api/auth/getall",
+          url: "http://ai.chamdiemthi.phunguyen.store/api/get_all_students",
           headers: {
             Authorization: localStorage.getItem("Token"),
           },
         });
-        if (result.data != null && result.data.status === "Fail") {
-          console.log(result.data.message);
-        }
-        if (result.data != null && result.data.status === "Success") {
-          setHs(result.data.payload);
-        }
+      
+          setHs(result.data);
+    
       }
   
       useEffect(() => {

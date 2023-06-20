@@ -7,55 +7,38 @@ import {
   PlusCircleTwoTone,
   CheckCircleTwoTone,
 } from "@ant-design/icons";
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 const TeacherList = () => {
     const columns = [
+      {
+        title: "Email",
+        dataIndex: "email",
+        key: "email",
+        render: (text, record) => (
+          // <Link to={`/profile/${record.email}`}>
+          //   <a>{text}</a>
+          // </Link>
+          <a>{text}</a>
+        ),
+      },
         {
-          title: "Image",
-          dataIndex: "image",
-          key: "image",
-          size: "small",
-          render: (image) => (
-            <Link to={`/profile/${image}`}>
-              <img
-                alt={image}
-                src={image}
-                style={{
-                  width: 50,
-                  height: 50,
-                  border: "1px solid #d9d9d9",
-                  borderRadius: "10%",
-                }}
-              />
-            </Link>
-          ),
-        },
-        {
-          title: "first name",
-          dataIndex: "first_name",
-          key: "first_name",
+          title: "Full Name",
+          dataIndex: "fullname",
+          key: "fullname",
           render: (text, record) => (
-            <Link to={`/profile/${record.id}`}>
-              <a>{text}</a>
-            </Link>
+            // <Link to={`/profile/${record.email}`}>
+            //   <a>{text}</a>
+            // </Link>
+            <a>{text}</a>
           ),
-        },
-        {
-          title: "Last name",
-          dataIndex: "last_name",
-          key: "last_name",
-          render: (text) => <a>{text}</a>,
         },
         {
           title: "Ngày sinh",
           dataIndex: "birthday",
           key: "birthday",
-        },
-        {
-          title: "Địa chỉ",
-          dataIndex: "address",
-          key: "address",
+          render: (endDate) => moment(endDate).format("YYYY-MM-DD"),
         },
         {
           title: "Giới tính",
@@ -63,9 +46,9 @@ const TeacherList = () => {
           key: "gender",
         },
         {
-          title: "Số điện thoại liên hệ",
-          dataIndex: "phoneNumber",
-          key: "phoneNumber",
+          title: "Thời gian tạo",
+          dataIndex: "created_at",
+          key: "created_at",
         },
         {
           title: "Action",
@@ -75,30 +58,31 @@ const TeacherList = () => {
               <EditOutlined type="link" 
               // onClick={() => showEdit(record)} 
               />
-              <DeleteOutlined style={{ color: "red" }} />
+              {/* <DeleteOutlined style={{ color: "red" }} onClick={} /> */}
             </Space>
           ),
         },
       ];
-  
+      
+      // async function delete(){
+      //   await axios.delete("http://dsasdasd")
+      // }
+
       const [DataEdit, setDataEdit] = useState();
-      const [gv, setGv] = useState([]);
+      const [hs, setHs] = useState([]);
   
   
       async function getAllEm() {
         const result = await axios({
           method: "get",
-          url: "http://localhost:8080/api/auth/getall",
+          url: "http://ai.chamdiemthi.phunguyen.store/api/get_all_teachers",
           headers: {
             Authorization: localStorage.getItem("Token"),
           },
         });
-        if (result.data != null && result.data.status === "Fail") {
-          console.log(result.data.message);
-        }
-        if (result.data != null && result.data.status === "Success") {
-          setGv(result.data.payload);
-        }
+      
+          setHs(result.data);
+    
       }
   
       useEffect(() => {
@@ -113,7 +97,7 @@ const TeacherList = () => {
             Table with Hover
           </CardTitle>
           <CardBody className="">
-          <Table columns={columns} dataSource={gv}></Table>;
+          <Table columns={columns} dataSource={hs}></Table>
           </CardBody>
         </Card>
       </Col>
@@ -122,3 +106,4 @@ const TeacherList = () => {
 };
 
 export default TeacherList;
+

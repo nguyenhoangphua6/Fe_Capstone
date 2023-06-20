@@ -1,105 +1,84 @@
-import {
-    Card,
-    Row,
-    Col,
-    CardTitle,
-    CardBody,
-    Button,
-    Form,
-    FormGroup,
-    Label,
-    Input,
-    FormText,
-  } from "reactstrap";
-  
-  const AddTeacher = () => {
-    return (
-      <Row>
-        <Col>
-          <Card>
-            <CardTitle tag="h6" className="border-bottom p-3 mb-0">
-              <i className="bi bi-bell me-2"> </i>
-              Add new teacher
-            </CardTitle>
-            <CardBody>
-              <Form>
-              <FormGroup>
-                  <Label for="first_name">First name</Label>
-                  <Input
-                    id="firstName"
-                    name="firstName"
-                    placeholder="ex: Nguyễn"
-                    type="firstName"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="last_name">Last name</Label>
-                  <Input
-                    id="lastname"
-                    name="lastName"
-                    placeholder="ex: Văn A"
-                    type="lastName"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="birthdate">Birthday</Label>
-                  <Input
-                    id="birthday"
-                    name="birthday"
-                    placeholder="yyyy/mm/dd"
-                    type="birthday"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="address">Address</Label>
-                  <Input
-                    id="address"
-                    name="address"
-                    placeholder="101 Nguyen Huu Tho, Hai Chau, Da Nang"
-                    type="address"
-                  />
-                </FormGroup>
-                <FormGroup tag="fieldset">
-                <Label for="gender">Gender</Label>
-                  <FormGroup check>
-                    <Input name="radio1" type="radio" />{" "}
-                    <Label check>
-                     Male
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check>
-                    <Input name="radio1" type="radio" />{" "}
-                    <Label check>
-                        Female
-                    </Label>
-                  </FormGroup>
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleEmail">Email</Label>
-                  <Input
-                    id="exampleEmail"
-                    name="email"
-                    placeholder="with a placeholder"
-                    type="email"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="examplePassword">Password</Label>
-                  <Input
-                    id="examplePassword"
-                    name="password"
-                    placeholder="password placeholder"
-                    type="password"
-                  />
-                </FormGroup>
-                <Button>Submit</Button>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    );
+import { Form, Input, Button, Select, DatePicker } from 'antd';
+import axios from 'axios';
+
+const { Option } = Select;
+
+const handleSubmit = async (values) => {
+  try {
+    const response = await axios.post('http://ai.chamdiemthi.phunguyen.store/api/add_teacher', values);
+    console.log(response.data); // Handle the response data as needed
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const AddTeacher = () => {
+  const onFinish = (values) => {
+    handleSubmit(values);
   };
-  
-  export default AddTeacher;
-  
+
+  return (
+    <Form onFinish={onFinish}>
+      <Form.Item
+        label="Email"
+        name="email"
+        rules={[{ required: true, message: 'Please enter your email' }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[{ required: true, message: 'Please enter your password' }]}
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item
+        label="Full Name"
+        name="fullname"
+        rules={[{ required: true, message: 'Please enter your full name' }]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Gender"
+        name="gender"
+        rules={[{ required: true, message: 'Please select your gender' }]}
+      >
+        <Select placeholder="Select gender">
+          <Option value="male">Male</Option>
+          <Option value="female">Female</Option>
+        </Select>
+      </Form.Item>
+
+      <Form.Item
+        label="Birthdate"
+        name="birthdate"
+        rules={[{ required: true, message: 'Please select your birthdate' }]}
+      >
+        {/* <DatePicker format="YYYY-MM-DD"/> */}
+        <Input/>
+      </Form.Item>
+      
+
+      <Form.Item
+        label="Address"
+        name="address"
+        rules={[{ required: true, message: 'Please enter your address' }]}
+      >
+        <Input.TextArea />
+      </Form.Item>
+
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+};
+
+export default AddTeacher;

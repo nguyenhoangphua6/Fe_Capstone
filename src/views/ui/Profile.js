@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { Card, CardBody, CardTitle } from "reactstrap";
+import { Card, CardBody, CardTitle, Button } from "reactstrap";
+import { message } from "antd";
+import "./Profile.css"; // Import custom CSS file for styling
 
 const Profile = () => {
   const { email } = useParams();
@@ -11,7 +13,7 @@ const Profile = () => {
     const fetchStudent = async () => {
       try {
         const response = await axios.get(
-          `http://http://ai.chamdiemthi.phunguyen.store/api/profile/1`
+          `http://be.chamdiemthi.phunguyen.store/api/profile/${localStorage.getItem("Id")}`
         );
         setStudent(response.data);
       } catch (error) {
@@ -22,26 +24,50 @@ const Profile = () => {
     fetchStudent();
   }, [email]);
 
-  if (!student) {
-    return <div>Loading...</div>;
+  const handleEditProfile = () => {
+    // Handle edit profile logic here
+    message.success("Redirecting to edit profile page");
+  };
+
+  if (!student || Object.keys(student).length === 0) {
+    return <div>No data available</div>;
   }
 
   return (
-    <div>
-      <Card>
-        <CardTitle tag="h5" className="p-3 mb-0">
-          Student Profile
+    <div className="profile-container">
+      <Card className="profile-card">
+        <CardTitle tag="h5" className="profile-title">
+          Thông tin cá nhân
         </CardTitle>
         <CardBody>
-          <div>
-            <h6>Email: {student.email}</h6>
-            <h6>Full Name: {student.fullname}</h6>
-            <h6>Ngày sinh: {student.birthday}</h6>
-            <h6>Giới tính: {student.gender}</h6>
-            <h6>Địa chỉ: {student.address}</h6>
-            <h6>Thời gian tạo: {student.created_at}</h6>
-            <h6>Thời gian update: {student.updated_at}</h6>
+          <div className="profile-info">
+            <div className="profile-item">
+              <h6 className="profile-label">Email:</h6>
+              <p className="profile-value">{student.email}</p>
+            </div>
+            <div className="profile-item">
+              <h6 className="profile-label">Họ và tên:</h6>
+              <p className="profile-value">{student.fullname}</p>
+            </div>
+            <div className="profile-item">
+              <h6 className="profile-label">Ngày sinh:</h6>
+              <p className="profile-value">{student.birthday}</p>
+            </div>
+            <div className="profile-item">
+              <h6 className="profile-label">Giới tính:</h6>
+              <p className="profile-value">{student.gender}</p>
+            </div>
+            <div className="profile-item">
+              <h6 className="profile-label">Địa chỉ:</h6>
+              <p className="profile-value">{student.address}</p>
+            </div>
           </div>
+          <Button tag={Link} to="/editprofile" color="primary" className="edit-profile-button">
+            Edit Profile
+          </Button>
+          <Button tag={Link} to="/changepassword" className="change-password-button">
+          Đổi mật khẩu
+        </Button>
         </CardBody>
       </Card>
     </div>

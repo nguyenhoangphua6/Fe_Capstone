@@ -1,187 +1,176 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import Form from "../../components/Forms";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
-  const [validate, setValidate] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Formik } from "formik";
+import * as yup from "yup";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {message} from "antd";
+const theme = createTheme();
 
-  const validateLogin = () => {
-    let isValid = true;
+function Signin() {
+  const [resData, setResData] = useState(null);
 
-    let validator = Form.validator({
-      email: {
-        value: email,
-        isRequired: true,
-        isEmail: true,
-      },
-      password: {
-        value: password,
-        isRequired: true,
-        minLength: 6,
+  let navigate = useNavigate();
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().required(),
+  });
+
+
+  async function postSignInInfo(inputData) {
+    try{
+      const response = await axios({
+      method: "post",
+      url: "http://be.chamdiemthi.phunguyen.store/api/login",
+      data: {
+        email: inputData.email,
+        password: inputData.password,
       },
     });
 
-    if (validator !== null) {
-      setValidate({
-        validate: validator.errors,
-      });
+    localStorage.setItem("Token", response.data.token);
+    localStorage.setItem("Role", response.data.role);
+    localStorage.setItem("Id", response.data.id);
+  
+    if(response.status === 200)
+     {
+      message.success("Bạn đã đăng nhập thành công");
+      navigate("/profile");
+      window.location.reload()
+     }else{
+      message.error("Bạn đã nhập sai tài khoản hoặc mật khẩu");
 
-      isValid = false;
+     }
     }
-    return isValid;
+      catch(error){
+        // navigate("/")
+        message.error("Bạn đã nhập sai tài khoản hoặc mật khẩu");
+      
+      }
+    }
+  
+
+  const clearLocalStorage = () => {
+    localStorage.clear();
   };
 
-  const authenticate = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    const interval = setInterval(clearLocalStorage, 10000);
 
-    const validate = validateLogin();
-
-    if (validate) {
-      setValidate({});
-      setEmail("");
-      setPassword("");
-      alert("Successfully Login");
-    }
-  };
-
-  const togglePassword = (e) => {
-    if (showPassword) {
-      setShowPassword(false);
-    } else {
-      setShowPassword(true);
-    }
-  };
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
-    <div className="row g-0 auth-wrapper">
-      <div className="col-10 col-md-3 col-lg-3 h-100 auth-background-col">
-        <div className="auth-background-holder"></div>
-        <div className="auth-background-mask"></div>
-      </div>
-
-      <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center">
-        <div className="d-flex flex-column align-content-end">
-          <div className="auth-body mx-auto">
-            <b >Login to your account</b>
-            <div className="auth-form-container text-start">
-              <form
-                className="auth-form"
-                method="POST"
-                onSubmit={authenticate}
-                autoComplete={"off"}
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Formik
+            validationSchema={schema}
+            initialValues={{
+              email: "",
+              password: "",
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              postSignInInfo(values);
+              setSubmitting(false);
+            }}
+          >
+            {({
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              values,
+              touched,
+              isInValid,
+              errors,
+            }) => (
+              <Box
+                component="form"
+                onSubmit={handleSubmit}
+                noValidate
+                sx={{ mt: 1 }}
               >
-                <div className="email mb-3">
-                  <input
-                    type="email"
-                    className={`form-control ${
-                      validate.validate && validate.validate.email
-                        ? "is-invalid "
-                        : ""
-                    }`}
-                    id="email"
-                    name="email"
-                    value={email}
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-
-                  <div
-                    className={`invalid-feedback text-start ${
-                      validate.validate && validate.validate.email
-                        ? "d-block"
-                        : "d-none"
-                    }`}
-                  >
-                    {validate.validate && validate.validate.email
-                      ? validate.validate.email[0]
-                      : ""}
-                  </div>
-                </div>
-
-                <div className="password mb-3">
-                  <div className="input-group">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className={`form-control ${
-                        validate.validate && validate.validate.password
-                          ? "is-invalid "
-                          : ""
-                      }`}
-                      name="password"
-                      id="password"
-                      value={password}
-                      placeholder="Password"
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary btn-sm"
-                      onClick={(e) => togglePassword(e)}
-                    >
-                      <i
-                        className={
-                          showPassword ? "far fa-eye" : "far fa-eye-slash"
-                        }
-                      ></i>{" "}
-                    </button>
-
-                    <div
-                      className={`invalid-feedback text-start ${
-                        validate.validate && validate.validate.password
-                          ? "d-block"
-                          : "d-none"
-                      }`}
-                    >
-                      {validate.validate && validate.validate.password
-                        ? validate.validate.password[0]
-                        : ""}
-                    </div>
-                  </div>
-
-                  <div className="extra mt-3 row justify-content-between">
-                    <div className="col-6">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id="remember"
-                          checked={remember}
-                          onChange={(e) => setRemember(e.currentTarget.checked)}
-                        />
-                        <label className="form-check-label" htmlFor="remember">
-                          Remember me
-                        </label>
-                      </div>
-                    </div>
-                    <div className="col-6">
-                      <div className="forgot-password text-end">
-                        <Link to="/forgot-password">Forgot password?</Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    className="btn btn-primary w-100 theme-btn mx-auto"
-                  >
-                    Log In
-                  </button>
-                </div>
-              </form>
-
-              <hr />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={handleChange}
+                  value={values.email}
+                  autoFocus
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  autoComplete="current-password"
+                />
+                <FormControlLabel
+                  control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link variant="body2">Forgot password?</Link>
+                  </Grid>
+                  <Grid item>
+                    <Link variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            )}
+          </Formik>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
-};
-
-export default Login;
+}
+export default Signin; 

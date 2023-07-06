@@ -24,7 +24,7 @@ const TeacherList = () => {
         ),
       },
         {
-          title: "Full Name",
+          title: "Họ và tên",
           dataIndex: "fullname",
           key: "fullname",
           render: (text, record) => (
@@ -75,7 +75,7 @@ const TeacherList = () => {
       async function getAllEm() {
         const result = await axios({
           method: "get",
-          url: "http://ai.chamdiemthi.phunguyen.store/api/get_all_teachers",
+          url: "http://be.chamdiemthi.phunguyen.store/api/get_all_teachers",
           headers: {
             Authorization: localStorage.getItem("Token"),
           },
@@ -94,7 +94,7 @@ const TeacherList = () => {
         <Card>
           <CardTitle tag="h6" className="border-bottom p-3 mb-0">
             <i className="bi bi-card-text me-2"> </i>
-            Table with Hover
+            Danh sách giáo viên toàn trường
           </CardTitle>
           <CardBody className="">
           <Table columns={columns} dataSource={hs}></Table>

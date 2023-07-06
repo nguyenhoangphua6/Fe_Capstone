@@ -1,129 +1,98 @@
 import { Button, Nav, NavItem } from "reactstrap";
-import Logo from "./Logo";
+import logoImage from "../assets/images/logos/logochamdiemthi.svg";
 import { Link, useLocation } from "react-router-dom";
 
-const navigation = [
-  // {
-  //   title: "Dashboard",
-  //   href: "/starter",
-  //   icon: "bi bi-speedometer2",
-  // },
-  // {
-  //   title: "Alert",
-  //   href: "/alerts",
-  //   icon: "bi bi-bell",
-  // },
-  // {
-  //   title: "Badges",
-  //   href: "/badges",
-  //   icon: "bi bi-patch-check",
-  // },
-  // {
-  //   title: "Buttons",
-  //   href: "/buttons",
-  //   icon: "bi bi-hdd-stack",
-  // },
-  // {
-  //   title: "Cards",
-  //   href: "/cards",
-  //   icon: "bi bi-card-text",
-  // },
-  // {
-  //   title: "Grid",
-  //   href: "/grid",
-  //   icon: "bi bi-columns",
-  // },
-  // {
-  //   title: "Table",
-  //   href: "/table",
-  //   icon: "bi bi-layout-split",
-  // },
-  {
-    title: "StudentList",
-    href: "/studentlist",
-    icon: "bi bi-layout-split",
-  },
-  {
-    title: "TeacherLisr",
-    href: "/teacherlist",
-    icon: "bi bi-layout-split",
-  },
-  {
-    title: "SubjectList",
-    href: "/subjectlist",
-    icon: "bi bi-layout-split",
-  },
-  {
-    title: "Login",
-    href: "/login",
-    icon: "bi bi-textarea-resize",
-  },
-  {
-    title: "Profile",
-    href: "/profile",
-    icon: "bi bi-textarea-resize",
-  },
-  {
-    title: "ChangePassword",
-    href: "/changepassword",
-    icon: "bi bi-textarea-resize",
-  },
-  {
-    title: "ResetPassword",
-    href: "/resetpassword",
-    icon: "bi bi-textarea-resize",
-  },
-  // {
-  //   title: "CreateAccount",
-  //   href: "/createaccount",
-  //   icon: "bi bi-textarea-resize",
-  // },
-  {
-    title: "AddStudent",
-    href: "/addstudent",
-    icon: "bi bi-textarea-resize",
-  },
-  {
-    title: "ExamShow",
-    href: "/examshow",
-    icon: "bi bi-textarea-resize",
-  },
-  {
-    title: "AddTeacher",
-    href: "/addteacher",
-    icon: "bi bi-textarea-resize",
-  },
-  {
-    title: "ResuiltTable",
-    href: "/resuilttable",
-    icon: "bi bi-textarea-resize",
-  },    
-  {
-    title: "AddExam",
-    href: "/addexam",
-    icon: "bi bi-textarea-resize",
-  }, 
-  {
-    title: "ListSutdentDoExam",
-    href: "/listsutdentdoexam",
-    icon: "bi bi-textarea-resize",
-  }, 
-  // {
-  //   title: "Forms",
-  //   href: "/forms",
-  //   icon: "bi bi-textarea-resize",
-  // },
-  // {
-  //   title: "Breadcrumbs",
-  //   href: "/breadcrumbs",
-  //   icon: "bi bi-link",
-  // },
-  // {
-  //   title: "About",
-  //   href: "/about",
-  //   icon: "bi bi-people",
-  // },
-];
+const role = localStorage.getItem("Role");
+let navigation = [];
+
+if(role === "1"){
+  navigation = [
+    {
+      title: "Thông tin cá nhân",
+      href: "/profile",
+      icon: "bi bi-textarea-resize",
+    },
+    {
+      title: "Sửa điểm",
+      href: "/subjectlist",
+      icon: "bi bi-layout-split",
+    },
+    {
+      title: "Đổi mật khẩu",
+      href: "/changepassword",
+      icon: "bi bi-textarea-resize",
+    },
+    {
+      title: "Đổi mật khẩu user",
+      href: "/resetpassword",
+      icon: "bi bi-textarea-resize",
+    },
+    {
+      title: "Tạo tài khoản học sinh",
+      href: "/addstudent",
+      icon: "bi bi-textarea-resize",
+    },
+    {
+      title: "Tạo tài khoản giáo viên",
+      href: "/addteacher",
+      icon: "bi bi-textarea-resize",
+    },  
+    {
+      title: "Thêm học sinh vào khóa học",
+      href: "/addstudentintocourse",
+      icon: "bi bi-textarea-resize",
+    }, 
+    {
+      title: "Thêm giáo viên vào khóa học",
+      href: "/addteacherintocourse",
+      icon: "bi bi-textarea-resize",
+    }, 
+    {
+      title: "Danh sách học sinh",
+      href: "/studentlist",
+      icon: "bi bi-textarea-resize",
+    }, 
+    {
+      title: "Danh sách giáo vien",
+      href: "/teacherlist",
+      icon: "bi bi-textarea-resize",
+    }, 
+  ];
+}
+else if(role === "2"){
+  navigation = [
+    {
+      title: "Thông tin cá nhân",
+      href: "/profile",
+      icon: "bi bi-textarea-resize",
+    },
+    {
+      title: "Danh sách môn học",
+      href: "/subjectlist",
+      icon: "bi bi-layout-split",
+    },
+    {
+      title: "Kiểm tra đạo văn",
+      href: "/checkessay",
+      icon: "bi bi-layout-split",
+    },
+  ];
+}
+else{
+  navigation = [
+    {
+      title: "Thông tin cá nhân",
+      href: "/profile",
+      icon: "bi bi-textarea-resize",
+    },
+    {
+      title: "Danh sách môn học",
+      href: "/subjectlist",
+      icon: "bi bi-layout-split",
+    },  
+  ];
+}
+
 
 const Sidebar = () => {
   const showMobilemenu = () => {
@@ -134,7 +103,11 @@ const Sidebar = () => {
   return (
     <div className="p-3">
       <div className="d-flex align-items-center">
-        <Logo />
+      <img
+          src={logoImage}
+          alt="Logo"
+          style={{ width: "200px", height: "200px" }}
+        />
         <Button
           close
           size="sm"
@@ -159,15 +132,6 @@ const Sidebar = () => {
               </Link>
             </NavItem>
           ))}
-          {/* <Button
-            color="danger"
-            tag="a"
-            target="_blank"
-            className="mt-3"
-            href="https://www.wrappixel.com/templates/ample-react-dashboard/?ref=33"
-          >
-            Upgrade To Pro
-          </Button> */}
         </Nav>
       </div>
     </div>

@@ -1,0 +1,38 @@
+.edit-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .edit-profile-card {
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .edit-profile-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .edit-profile-info {
+    margin-bottom: 20px;
+  }
+  
+  .edit-profile-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .edit-profile-label {
+    width: 100px;
+    font-weight: bold;
+  }
+  
+  .edit-profile-value {
+    margin-left: 10px;
+  }
+  

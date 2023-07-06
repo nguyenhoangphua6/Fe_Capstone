@@ -1,73 +1,99 @@
-import { Row, Col,  Card, CardTitle, CardBody } from "reactstrap";
-import {Space, Table } from "antd";
+import { Row, Col, Card, CardTitle, CardBody } from "reactstrap";
+import { Space, Table, Button } from "antd";
 import { Link } from "react-router-dom";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  PlusCircleTwoTone,
-  CheckCircleTwoTone,
-} from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusCircleTwoTone, CheckCircleTwoTone } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 const ListSutdentDoExam = () => {
-    const columns = [
-        {
-          title: "Name",
-          dataIndex: "name",
-          key: "name",
-          render: (text) => <a>{text}</a>,
-        },
-        {
-          title: "Tên lớp",
-          dataIndex: "class",
-          key: "class",
-          render: (text) => <a>{text}</a>,
-        },
-        {
-          title: "Tình trạng",
-          dataIndex: "status",
-          key: "status",
-        },
-        {
-          title: "Điểm số",
-          dataIndex: "mark",
-          key: "mark",
-        },
-      ];
-  
-      const [DataEdit, setDataEdit] = useState();
-      const [hs, setHs] = useState([]);
-  
-  
-      async function getAllEm() {
-        const result = await axios({
-          method: "get",
-          url: "http://localhost:8080/api/auth/getall",
-          headers: {
-            Authorization: localStorage.getItem("Token"),
-          },
+  const columns = [
+    {
+      title: "Họ và tên",
+      dataIndex: "fullname",
+      key: "fullname",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Giới tính",
+      dataIndex: "gender",
+      key: "gender",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Tình trạng",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: "Điểm số",
+      dataIndex: "score",
+      key: "score",
+    },
+    {
+      title: "Hành động", 
+      key: "action",
+      render: (record) => (
+        <>
+          {localStorage.getItem("Role") === "3" ? (
+            <Button type="primary" onClick={() => handleCheckResult(record)}>
+            Xem kết quả
+          </Button>
+          ) : (
+            <Button type="primary" onClick={() => handleCheckResult(record)}>
+          Chấm bài
+        </Button>
+          )}
+        </>
+      ),
+    },
+  ];
+
+  const [hs, setHs] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://be.chamdiemthi.phunguyen.store/api/exam/${localStorage.getItem("examid")}`);
+        const studentExams = response.data.studentExams.map((studentExam) => {
+          return {
+            fullname: studentExam.student.fullname,
+            gender: studentExam.student.gender,
+            status: studentExam.status,
+            score: studentExam.score,
+            id: studentExam.id,
+            studentId: studentExam.student.id,
+          };
         });
-        if (result.data != null && result.data.status === "Fail") {
-          console.log(result.data.message);
-        }
-        if (result.data != null && result.data.status === "Success") {
-          setHs(result.data.payload);
-        }
+        setHs(studentExams);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
       }
-  
-      useEffect(() => {
-        getAllEm();
-      }, []);
+    };
+
+    fetchData();
+  }, []);
+
+  const handleCheckResult = (record) => {
+    console.log("Clicked on Check Result for exam with id:", record.id);
+    // Lưu giá trị studentExam.student.id vào localStorage
+    localStorage.setItem("studentid", record.studentId);
+    localStorage.setItem("resuiltid", record.id);
+    // Chuyển hướng đến trang "/ResultExam/1"
+    navigate(`/result/${record.id}`);
+  };
+
   return (
     <Row>
       <Col lg="12">
         <Card>
           <CardTitle tag="h6" className="border-bottom p-3 mb-0">
             <i className="bi bi-card-text me-2"> </i>
-            List Sutdent Do Exam
+            Danh sách học sinh đã làm bài kiểm tra
           </CardTitle>
           <CardBody className="">
-          <Table columns={columns} dataSource={hs}></Table>
+            <Table columns={columns} dataSource={hs}></Table>
           </CardBody>
         </Card>
       </Col>

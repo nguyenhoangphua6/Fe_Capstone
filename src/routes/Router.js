@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
+import LoginLayout from "../layouts/LoginLayout";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
@@ -20,15 +21,20 @@ const ResuiltTable = lazy(() => import("../views/ui/ResuiltTable"));
 const Login = lazy(() => import("../views/ui/Login"));
 const AddStudent = lazy(() => import("../views/ui/AddStudent"));
 const AddTeacher = lazy(() => import("../views/ui/AddTeacher"));
-const CreateAccount = lazy(() => import("../views/ui/CreateAccount"));
 const TeacherList = lazy(() => import("../views/ui/TeacherList"));
 const ChangePassword = lazy(() => import("../views/ui/ChangePassword"));
 const ResetPassword = lazy(() => import("../views/ui/ResetPassword"));
 const AddExam = lazy(() => import("../views/ui/AddExam"));
 const ExamShow = lazy(() => import("../views/ui/ExamShow"));
-
+const ListExam = lazy(() => import("../views/ui/ListExam"));
+const Result = lazy(() => import("../views/ui/Result"));
+const CheckEssay = lazy(() => import("../views/ui/CheckEssay"));
+const AddStudentIntoCourse = lazy(() => import("../views/ui/AddStudentIntoCourse"));
+const AddTeacherIntoCourse = lazy(() => import("../views/ui/AddTeacherIntoCourse"));
 const ListSutdentDoExam = lazy(() => import("../views/ui/ListSutdentDoExam"));
 const Profile = lazy(() => import("../views/ui/Profile"));
+const EditProfile = lazy(() => import("../views/ui/EditProfile"));
+
 // const Forms = lazy(() => import("../views/ui/Forms"));
 // const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 
@@ -37,9 +43,17 @@ const Profile = lazy(() => import("../views/ui/Profile"));
 const ThemeRoutes = [
   {
     path: "/",
+    element: <LoginLayout />,
+    children: [
+      { path: "/login", exact: true, element: <Login /> },
+      { path: "/", exact: true, element: <Login /> },
+    ],
+  },
+  {
+    path: "/",
     element: <FullLayout />,
     children: [
-      { path: "/", element: <Navigate to="/login" /> },
+      // { path: "/", exact: true, element: <Login /> },
       { path: "/starter", exact: true, element: <Starter /> },
       // { path: "/about", exact: true, element: <About /> },
       // { path: "/alerts", exact: true, element: <Alerts /> },
@@ -47,21 +61,25 @@ const ThemeRoutes = [
       // { path: "/buttons", exact: true, element: <Buttons /> },
       // { path: "/cards", exact: true, element: <Cards /> },
       // { path: "/grid", exact: true, element: <Grid /> },
-      { path: "/login", exact: true, element: <Login /> },
       { path: "/changepassword", exact: true, element: <ChangePassword /> },
       { path: "/resetpassword", exact: true, element: <ResetPassword /> },
-      { path: "/examshow", exact: true, element: <ExamShow /> },
+      { path: "/examshow/:id", exact: true, element: <ExamShow /> },
+      { path: "/result/:id", exact: true, element: <Result /> },  
       { path: "/profile", exact: true, element: <Profile /> },
       { path: "/addstudent", exact: true, element: <AddStudent /> },
       { path: "/addteacher", exact: true, element: <AddTeacher /> },
-      { path: "/createaccount", exact: true, element: <CreateAccount /> },
+      { path: "/editprofile", exact: true, element: <EditProfile /> },
+      { path: "/addstudentintocourse", exact: true, element: <AddStudentIntoCourse /> },
+      { path: "/addteacherintocourse", exact: true, element: <AddTeacherIntoCourse /> },
       { path: "/subjectlist", exact: true, element: <SubjectList /> },
       // { path: "/tables", exact: true, element: <Tables /> },
       { path: "/studentlist", exact: true, element: <StudentList /> },
       { path: "/teacherlist", exact: true, element: <TeacherList /> },
       { path: "/resuilttable", exact: true, element: <ResuiltTable /> },
-      { path: "/addexam", exact: true, element: <AddExam /> },
-      { path: "/listsutdentdoexam", exact: true, element: <ListSutdentDoExam /> },
+      { path: "/addexam/:id", exact: true, element: <AddExam /> },
+      { path: "/listexam/:id", exact: true, element: <ListExam /> },
+      { path: "/listsutdentdoexam/:id", exact: true, element: <ListSutdentDoExam /> },
+      { path: "/CheckEssay", exact: true, element: <CheckEssay /> },
       // { path: "/forms", exact: true, element: <Forms /> },
       // { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
     ],
